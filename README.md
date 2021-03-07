@@ -1,13 +1,15 @@
 ## users テーブル
 
-| Column    | Type    | Options     |
-| --------- | ------- | ----------- |
-| nickname  | string  | null: false |
-| email     | integer | null: false |
-| password  | integer | null: false |
-| full_name | string  | null: false |
-| katakana  | string  | null: false |
-| birthday  | integer | null: false |
+| Column          | Type               | Options                   |
+| --------------- | ------------------ | ------------------------- |
+| nickname        | string             | null: false               |
+| email           | integer            | null: false, unique: true |
+| password        | encrypted_password | null: false               |
+| last_name       | string             | null: false               |
+| first_name      | string             | null: false               |
+| last_name_kana  | string             | null: false               |
+| first_name_kana | string             | null: false               |
+| birthday        | date               | null: false               |
 
 ### Association
 
@@ -16,16 +18,17 @@ has_many :orders
 
 ## items テーブル
 
-| Column            | Type       | Options                        |
-| ----------------- | ---------- | ------------------------------ |
-| name              | string     | null: false                    |
-| description       | string     | null: false                    |
-| status            | string     | null: false                    |
-| shipping_charge   | string     | null: false                    |
-| price             | integer    | null: false                    |
-| shipping_location | string     | null: false                    |
-| shipping_days     | integer    | null: false                    |
-| user_id           | references | null: false, foreign_key: true |
+| Column             | Type       | Options                        |
+| ------------------ | ---------- | ------------------------------ |
+| name               | string     | null: false                    |
+| description        | text       | null: false                    |
+| status_id          | integer    | null: false                    |
+| shipping_charge_id | integer    | null: false                    |
+| category_id        | integer    | null: false                    |
+| price              | integer    | null: false                    |
+| prefecture_id      | integer    | null: false                    |
+| shipping_day_id    | integer    | null: false                    |
+| user               | references | null: false, foreign_key: true |
 
 ### Association
 
@@ -34,10 +37,10 @@ has_one :order
 
 ## orders 名
 
-| Column  | Type       | Options                        |
-| ------- | ---------- | ------------------------------ |
-| user_id | references | null: false, foreign_key: true |
-| item_id | references | null: false, foreign_key: true |
+| Column | Type       | Options                        |
+| ------ | ---------- | ------------------------------ |
+| user   | references | null: false, foreign_key: true |
+| item   | references | null: false, foreign_key: true |
 
 ### Association
 
@@ -47,15 +50,15 @@ has_one :address
 
 ## addresses テーブル
 
-| Column       | Type    | Options     |
-| ------------ | ------- | ----------- |
-| postal_code  | integer | null: false |
-| prefecture   | string  | null: false |
-| city         | integer | null: false |
-| house_number | integer | null: false |
-| building     | integer |             |
-| phone_number | integer | null: false |
-| order_id     | integer | null: false |
+| Column       | Type       | Options     |
+| ------------ | ---------- | ----------- |
+| postcode     | string     | null: false |
+| prefecture   | string     | null: false |
+| city         | integer    | null: false |
+| block        | integer    | null: false |
+| building     | integer    |             |
+| phone_number | integer    | null: false |
+| order        | references | null: false |
 
 ### Association
 
