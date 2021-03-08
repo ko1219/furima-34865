@@ -1,15 +1,15 @@
 ## users テーブル
 
-| Column          | Type               | Options                   |
-| --------------- | ------------------ | ------------------------- |
-| nickname        | string             | null: false               |
-| email           | integer            | null: false, unique: true |
-| password        | encrypted_password | null: false               |
-| last_name       | string             | null: false               |
-| first_name      | string             | null: false               |
-| last_name_kana  | string             | null: false               |
-| first_name_kana | string             | null: false               |
-| birthday        | date               | null: false               |
+| Column             | Type    | Options                   |
+| ------------------ | ------- | ------------------------- |
+| nickname           | string  | null: false               |
+| email              | integer | null: false, unique: true |
+| encrypted_password | string  | null: false               |
+| last_name          | string  | null: false               |
+| first_name         | string  | null: false               |
+| last_name_kana     | string  | null: false               |
+| first_name_kana    | string  | null: false               |
+| birthday           | date    | null: false               |
 
 ### Association
 
@@ -50,15 +50,15 @@ has_one :address
 
 ## addresses テーブル
 
-| Column       | Type       | Options     |
-| ------------ | ---------- | ----------- |
-| postcode     | string     | null: false |
-| prefecture   | string     | null: false |
-| city         | integer    | null: false |
-| block        | integer    | null: false |
-| building     | integer    |             |
-| phone_number | integer    | null: false |
-| order        | references | null: false |
+| Column        | Type       | Options     |
+| ------------- | ---------- | ----------- |
+| postcode      | string     | null: false |
+| prefecture_id | integer    | null: false |
+| city          | string     | null: false |
+| block         | string     | null: false |
+| building      | string     |             |
+| phone_number  | string     | null: false |
+| order         | references | null: false |
 
 ### Association
 
