@@ -18,7 +18,12 @@ RSpec.describe User, type: :model do
       @user.last_name = "山田"
       expect(@user).to be_valid
     end
-    it 'first_name_kana,last_name_kanaがカタカナ全角なら登録できる'do
+    it 'first_name_kanaがカタカナ全角なら登録できる'do
+      @user.first_name_kana = "タロウ"
+      @user.last_name_kana = "ヤマダ"
+      expect(@user).to be_valid
+    end
+    it 'first_name_kanaがカタカナ全角なら登録できる'do
       @user.first_name_kana = "タロウ"
       @user.last_name_kana = "ヤマダ"
       expect(@user).to be_valid
