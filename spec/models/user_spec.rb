@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   before do
     @user = FactoryBot.build(:user)
   end
-  describe 'ユーザー新規登録' do
+  context 'ユーザー新規登録成功時' do
     it '必須項目が全て記入されていれば登録できる' do
       expect(@user).to be_valid
     end
@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
     end
     it 'first_name,last_nameが全角のひらがな・カタカナ・漢字なら登録できる'do
       @user.first_name = "太郎"
-      @user.last_name = "やまだ"
+      @user.last_name = "山田"
       expect(@user).to be_valid
     end
     it 'first_name_kana,last_name_kanaがカタカナ全角なら登録できる'do
@@ -23,7 +23,9 @@ RSpec.describe User, type: :model do
       @user.last_name_kana = "ヤマダ"
       expect(@user).to be_valid
     end
+  end
 
+  context '新規登録エラー発生時'do
     it 'nicknameが空では登録できない' do
       @user.nickname = ""
       @user.valid?
@@ -33,6 +35,11 @@ RSpec.describe User, type: :model do
       @user.email = ""
       @user.valid?
       expect(@user.errors.full_messages).to include("Email can't be blank")
+    end
+    it 'emailは@がないと登録できない' do
+      @user.email = "hanako1123"
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Email is invalid")
     end
     it '重複したemailが存在する場合登録できないこと' do
       @user.save
@@ -44,6 +51,16 @@ RSpec.describe User, type: :model do
       @user.password = ""
       @user.valid?
       expect(@user.errors.full_messages).to include("Password can't be blank")
+    end
+    it 'passwordは数字のみでは登録できない' do
+      @user.password = "1234567"
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Password には英字と数字の両方を含めて設定してください")
+    end
+    it 'passwordは全角だと登録できない' do
+      @user.password = "１２３４５６７"
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Password には英字と数字の両方を含めて設定してください")
     end
     it 'passwordが5文字以下であれば登録できないこと' do
       @user.password = '12345'
@@ -109,45 +126,46 @@ RSpec.describe User, type: :model do
     end
   end
 end
-RSpec.describe 'ログイン', type: :system do
-  before do
-    @user = FactoryBot.create(:user)
-  end
-  context 'ログインができるとき' do
-    it '保存されているユーザーの情報と合致すればログインができる' do
-      # トップページに移動する
-      visit root_path
-      # トップページにログインページへ遷移するボタンがあることを確認する
-      expect(page).to have_content('ログイン')
-      # ログインページへ遷移する
-      visit new_user_session_path
-      # 正しいユーザー情報を入力する
-      fill_in 'email', with: @user.email
-      fill_in 'password', with: @user.password
-      # ログインボタンを押す
-      find('input[name="commit"]').click
-      # トップページへ遷移することを確認する
-      expect(current_path).to eq(root_path)
-      # サインアップページへ遷移するボタンやログインページへ遷移するボタンが表示されていないことを確認する
-      expect(page).to have_no_content('新規登録')
-      expect(page).to have_no_content('ログイン')
-    end
-  end
-  context 'ログインができないとき' do
-    it '保存されているユーザーの情報と合致しないとログインができない' do
-      # トップページに移動する
-      visit root_path
-      # トップページにログインページへ遷移するボタンがあることを確認する
-      expect(page).to have_content('ログイン')
-      # ログインページへ遷移する
-      visit new_user_session_path
-      # ユーザー情報を入力する
-      fill_in 'email', with: ''
-      fill_in 'password', with: ''
-      # ログインボタンを押す
-      find('input[name="commit"]').click
-      # ログインページへ戻されることを確認する
-      expect(current_path).to eq(new_user_session_path)
-    end
-  end
-end
+
+# RSpec.describe 'ログイン', type: :system do
+#   before do
+#     @user = FactoryBot.create(:user)
+#   end
+#   context 'ログインができるとき' do
+#     it '保存されているユーザーの情報と合致すればログインができる' do
+#       # トップページに移動する
+#       visit root_path
+#       # トップページにログインページへ遷移するボタンがあることを確認する
+#       expect(page).to have_content('ログイン')
+#       # ログインページへ遷移する
+#       visit new_user_session_path
+#       # 正しいユーザー情報を入力する
+#       fill_in 'email', with: @user.email
+#       fill_in 'password', with: @user.password
+#       # ログインボタンを押す
+#       find('input[name="commit"]').click
+#       # トップページへ遷移することを確認する
+#       expect(current_path).to eq(root_path)
+#       # サインアップページへ遷移するボタンやログインページへ遷移するボタンが表示されていないことを確認する
+#       expect(page).to have_no_content('新規登録')
+#       expect(page).to have_no_content('ログイン')
+#     end
+#   end
+#   context 'ログインができないとき' do
+#     it '保存されているユーザーの情報と合致しないとログインができない' do
+#       # トップページに移動する
+#       visit root_path
+#       # トップページにログインページへ遷移するボタンがあることを確認する
+#       expect(page).to have_content('ログイン')
+#       # ログインページへ遷移する
+#       visit new_user_session_path
+#       # ユーザー情報を入力する
+#       fill_in 'email', with: ''
+#       fill_in 'password', with: ''
+#       # ログインボタンを押す
+#       find('input[name="commit"]').click
+#       # ログインページへ戻されることを確認する
+#       expect(current_path).to eq(new_user_session_path)
+#     end
+#   end
+# end
