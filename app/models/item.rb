@@ -13,7 +13,7 @@ with_options presence: true do
   validates :image
   validates :name
   validates :description
-  validates :price, format: { with: /\A[0-9]+\z/, message: 'Half-width number' },
+  validates :price, numericality: { with: /\A[0-9]+\z/, message: 'Half-width number' },
   inclusion: { in: 300..9999999, message: 'Out of setting range' }
   validates :prefecture_id, numericality: { other_than: 1, message: 'Select' }
   validates :shipping_charge_id, numericality: { other_than: 1, message: 'Select' }
