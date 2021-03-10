@@ -50,6 +50,11 @@ RSpec.describe Item, type: :model do
   end
 
   context '商品を出品できない場合'do
+    it '画像がない場合は出品できない'do
+      @item.image = nil
+      @item.valid?
+      expect(@item.errors.full_messages).to include("Image can't be blank")
+    end
     it '商品名が空の場合出品できない'do
       @item.name = ""
       @item.valid?
@@ -92,6 +97,21 @@ RSpec.describe Item, type: :model do
     end
     it '販売価格が半角数字でない場合出品できない'do
       @item.price = '９００'
+      @item.valid?
+      expect(@item.errors.full_messages).to include("Price Half-width number")
+    end
+    it '販売価格が未入力の場合出品できない'do
+      @item.price = ""
+      @item.valid?
+      expect(@item.errors.full_messages).to include("Price can't be blank")
+    end
+    it'販売価格が範囲を超えている場合出品できない'do
+      @item.price = 10000000000
+      @item.valid?
+      expect(@item.errors.full_messages).to include("Price Out of setting range")
+    end
+    it '販売価格が数字出ない場合は出品できない'do
+      @item.price = "アイウエオ"
       @item.valid?
       expect(@item.errors.full_messages).to include("Price Half-width number")
     end
