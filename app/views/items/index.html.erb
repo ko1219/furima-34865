@@ -124,10 +124,9 @@
   <div class='item-contents'>
     <h2 class='title'>ピックアップカテゴリー</h2>
     <%= link_to '新規投稿商品', "#", class: "subtitle" %>
+    <% if @items.present? %>
     <% @items.each do |item| %>
     <ul class='item-lists'>
-
-      <% if item.present? %>
       <li class='list'>
         <%= link_to "#" do %>
         <div class='item-img-content'>
@@ -154,9 +153,8 @@
         </div>
         <% end %>
       </li>
-      <% end %>
-
-    <% unless item.present? %>
+    <% end %>
+    <% else %>
       <li class='list'>
         <%= link_to '#' do %>
         <%= image_tag "https://tech-master.s3.amazonaws.com/uploads/curriculums/images/Rails1-4/sample.jpg", class: "item-img" %>
@@ -174,9 +172,8 @@
         </div>
         <% end %>
       </li>
-    <% end %>
     </ul>
-  <% end %>
+    <% end %>
   </div>
   <%# /商品一覧 %>
 </div>
