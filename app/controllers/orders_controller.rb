@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   def index
+    @item = Item.find(params[:item_id])
     @order_address = OrderAddress.new(params[:id])
   end
 
@@ -9,6 +10,6 @@ class OrdersController < ApplicationController
 
   private
   def order_address_params
-    params.permit(:postcode, :prefecture_id, :city, :block, :building, :phone_number, :price, :item_id, :user_id)
+    params.permit(:postcode, :prefecture_id, :city, :block, :building, :phone_number, :price, :order_id, :user_id)
   end
 end
