@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe OrderAddress, type: :model do
   before do
-    @order_address = FactoryBot.build(:order_address)
+    user_id = FactoryBot.create(:user)
+    item_id = FactoryBot.create(:item)
+    @order_address = FactoryBot.build(:order_address, user_id: user_id.id, item_id: item_id.id)
+    sleep 0.1
   end
   context '商品を購入できる場合' do
     it '必要な情報を適切に入力すると、商品の購入ができること' do
@@ -55,6 +58,21 @@ RSpec.describe OrderAddress, type: :model do
       @order_address.phone_number = "fesdv333ああ"
       @order_address.valid?
       expect(@order_address.errors.full_messages).to include("Phone number Input only number")
+    end
+    it '電話番号は12桁以上では購入できない' do
+      @order_address.phone_number = "3212321232"
+      @order_address.valid?
+      expect(@order_address.errors.full_messages).to include("Phone number Input only number")
+    end
+    it 'user_idが空の場合、購入できない' do
+      @order_address.user_id = ""
+      @order_address.valid?
+      expect(@order_address.errors.full_messages).to include("User can't be blank")
+    end
+    it 'item_idが空の場合、購入できない' do
+      @order_address.item_id = ""
+      @order_address.valid?
+      expect(@order_address.errors.full_messages).to include("Item can't be blank")
     end
   end
 end
