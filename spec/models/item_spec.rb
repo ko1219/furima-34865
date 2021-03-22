@@ -110,7 +110,7 @@ RSpec.describe Item, type: :model do
       @item.valid?
       expect(@item.errors.full_messages).to include("Price Out of setting range")
     end
-    it '販売価格が数字出ない場合は出品できない'do
+    it '販売価格が数字でない場合は出品できない'do
       @item.price = "アイウエオ"
       @item.valid?
       expect(@item.errors.full_messages).to include("Price Half-width number")
