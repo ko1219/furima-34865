@@ -11,6 +11,8 @@ class OrderAddress
     validates :block
     validates :phone_number, format: { with: VALID_PHONE_NUMBER_REGEX, message: "Input only number" }
     validates :token
+    validates :user_id
+    validates :item_id
   end
 
   def save
