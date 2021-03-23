@@ -26,7 +26,7 @@ class OrdersController < ApplicationController
   end
 
   def set_item
-    @item.find(params[:item_id])
+    @item = Item.find(params[:item_id])
   end
 
   def card_info
