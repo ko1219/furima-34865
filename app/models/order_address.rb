@@ -2,8 +2,7 @@ class OrderAddress
   include ActiveModel::Model
   attr_accessor :postcode, :prefecture_id, :city, :block, :building, :phone_number, :item_id, :user_id, :token, :price, :order_id
 
-  VALID_PHONE_NUMBER_REGEX = /\A\d{10}\z/
-                             /\A\d{11}\z/
+  VALID_PHONE_NUMBER_REGEX = /^(0{1}\d{9,10})$/
 
   VALID_POSTCODE_REGEX = /\A[0-9]{3}-[0-9]{4}\z/
   with_options presence: true do
@@ -11,7 +10,7 @@ class OrderAddress
     validates :prefecture_id, numericality: { other_than: 1, message: 'Select' }
     validates :city
     validates :block
-    validates :phone_number, format: { with: VALID_PHONE_NUMBER_REGEX, message: 'Input only number' }
+    validates :phone_number, numericality: { with: VALID_PHONE_NUMBER_REGEX, message: 'Input only number' }
     validates :token
     validates :user_id
     validates :item_id
